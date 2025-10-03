@@ -2,27 +2,22 @@
 
 namespace App\Controllers;
 
+use App\Controllers\BaseController;
 use App\Models\BahanBakuModel;
 use App\Models\PermintaanModel;
-use App\Models\UserModel;
 
 class DashboardController extends BaseController
 {
     public function index()
     {
-        $data['title'] = 'Dashboard';
-        $role = session()->get('role');
+        $bahanModel = new BahanBakuModel();
+        $permintaanModel = new PermintaanModel();
 
-        if ($role === 'gudang') {
-            $userModel = new UserModel();
-            $BahanModel = new BahanBakuModel();
-
-            $data['total_user'] = $userModel->countAllResults();
-            $data['total_bahan'] = $BahanModel->countAllResults();
-
-        } elseif ($role === 'dapur') {
-            return "Mahasiswa";
-        }
+        $data = [
+            'title' => 'Dashboard',
+            'total_bahan' => $bahanModel->countAllResults(), // hitung total bahan
+            'permintaan_menunggu' => $permintaanModel->where('status', 'menunggu')->countAllResults() //hiitung total permintaan
+        ];
 
         return view('dashboard', $data);
     }

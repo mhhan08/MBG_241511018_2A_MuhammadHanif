@@ -1,12 +1,12 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\admin;
 
 use App\Controllers\BaseController;
 use App\Models\BahanBakuModel;
 use App\Models\UserModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 
-class AdminController extends BaseController
+class BahanBakuController extends BaseController
 {
     protected $bahanModel;
 
@@ -18,39 +18,51 @@ class AdminController extends BaseController
     public function index()
     {
         $data = [
+            'title' => 'Data Bahan Baku',
             'bahan_baku' => $this->bahanModel->findAll()
         ];
 
-        return view('admin/bahan_baku', $data);
+        return view('admin/bahan_baku/index', $data);
     }
 
     public function new()
     {
-        return view('admin\bahan_form', [
+        $data = [
+            'title'      => 'Tambah Bahan Baku Baru',
             'validation' => \Config\Services::validation()
-        ]);
+        ];
+
+        // untuk create dan edit
+        return view('admin/bahan_baku/form', $data);
     }
 
     public function create()
     {
+        // aturan input
         $rules = [
-            'nama'       => 'required|min_length[3]',
-            'jumlah'     => 'required|numeric|greater_than[0]'
+            'nama'               => 'required|min_length[3]',
+            'jumlah'             => 'required|numeric|greater_than_equal_to[0]',
+            'satuan'             => 'required',
+            'tanggal_masuk'      => 'required|valid_date',
+            'tanggal_kadaluarsa' => 'required|valid_date'
         ];
 
         if (!$this->validate($rules)) {
-            return redirect()->back()
-                ->withInput()
-                ->with('validation', $this->validator);
+            // Jika tidak sesuai aturan kembali ke form
+            return redirect()->to('/admin/bahan-baku/new')->withInput();
         }
 
+        // simpan data
         $this->bahanModel->save([
-            'nama' => $this->request->getPost('nama'),
-            'jumlah'     => $this->request->getPost('jumlah')
+            'nama'               => $this->request->getPost('nama'),
+            'kategori'           => $this->request->getPost('kategori'),
+            'satuan'             => $this->request->getPost('satuan'),
+            'jumlah'             => $this->request->getPost('jumlah'),
+            'tanggal_masuk'      => $this->request->getPost('tanggal_masuk'),
+            'tanggal_kadaluarsa' => $this->request->getPost('tanggal_kadaluarsa')
         ]);
 
-        return redirect()->to('/admin/bahan_baku')
-            ->with('success', 'bahan baku berhasil ditambahkan.');
+        return redirect()->to('/admin/bahan-baku')->with('success', 'Bahan baku berhasil ditambahkan.');
     }
 
     public function edit($id = null)
@@ -70,7 +82,6 @@ class AdminController extends BaseController
     public function update($id = null)
     {
         $rules = [
-            'nama' => 'required|min_length[3]',
             'jumlah'     => 'required|numeric|greater_than[0]'
         ];
 
@@ -81,7 +92,6 @@ class AdminController extends BaseController
         }
 
         $this->courseModel->update($id, [
-            'nama' => $this->request->getPost('nama'),
             'jumlah'     => $this->request->getPost('jumlah')
         ]);
 

@@ -9,6 +9,7 @@ class AuthController extends BaseController
 {
     public function login()
     {
+        // Jika sudah login redirect ke dashboard
         if (session()->get('isLoggedIn')) {
             return redirect()->to('/dashboard');
         }
@@ -18,30 +19,33 @@ class AuthController extends BaseController
     public function prosesLogin()
     {
         $userModel = new UserModel();
-        $username = $this->request->getPost('name');
+        $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
-        $user = $userModel->where('name', $username)->first();
+        // cari email user
+        $user = $userModel->where('email', $email)->first();
 
+        // cek user dan verifikasi password nya
         if ($user && password_verify($password, $user['password'])) {
-            // Jika login berhasil, siapkan data session
+            // jika berhasil buat session
             $sessionData = [
-                'userId'     => $user['id'], // Menggunakan 'id' sesuai migrasi
-                'fullName'   => $user['full_name'],
+                'userId'     => $user['id'],
+                'name'       => $user['name'],
                 'role'       => $user['role'],
                 'isLoggedIn' => true
             ];
+            //buat session dan redirect ke dashboard
             session()->set($sessionData);
             return redirect()->to('/dashboard');
         } else {
-            // Jika gagal, kembali ke halaman login dengan pesan error
-            return redirect()->to('/login')->with('error', 'Username atau password salah.');
+            // kalau gagal
+            return redirect()->to('/login')->with('error', 'Email atau password salah.');
         }
     }
 
     public function logout()
     {
-        session()->destroy();
+        session()->destroy(); // hapus session
         return redirect()->to('/login');
     }
 }

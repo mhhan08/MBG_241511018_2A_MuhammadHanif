@@ -5,16 +5,33 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+
 $routes->get('/', 'Home::index');
-$routes->get('/login', 'AuthController::login');
-$routes->post('/login', 'AuthController::prosesLogin');
-$routes->get('/logout', 'AuthController::logout');
-
-$routes->get('/dashboard', 'DashboardController::index');
-$routes->get('admin/bahan_baku', 'AdminController::index');
-$routes->get('admin/tambah_bahan', 'AdminController::new');
-$routes->get('admin/edit_bahan/{id}', 'AdminController::edit');
-$routes->get('admin/hapus_bahan/{id}', 'AdminController::delete');
+$routes->get('login', 'AuthController::login');
+$routes->post('login', 'AuthController::prosesLogin');
+$routes->get('logout', 'AuthController::logout');
 
 
+// filter
+$routes->group('', ['filter' => 'auth'], function($routes) {
 
+    $routes->get('dashboard', 'DashboardController::index');
+
+    // rute untuk gudang
+    $routes->group('admin', ['filter' => 'role:gudang', 'namespace' => 'App\Controllers\Admin'], function ($routes) {
+
+        // CRUD bahan baku
+        $routes->get('bahan-baku', 'BahanBakuController::index');
+        $routes->get('bahan-baku/new', 'BahanBakuController::new');
+        $routes->post('bahan-baku', 'BahanBakuController::create');
+        $routes->get('bahan-baku/edit/(:num)', 'BahanBakuController::edit/$1');
+        $routes->post('bahan-baku/update/(:num)', 'BahanBakuController::update/$1');
+        $routes->post('bahan-baku/delete/(:num)', 'BahanBakuController::delete/$1');
+
+    });
+
+    // routes dapur
+    $routes->group('dapur', ['filter' => 'role:dapur'], function($routes) {
+
+    });
+});

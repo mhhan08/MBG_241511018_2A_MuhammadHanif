@@ -55,12 +55,10 @@
             border-radius: 10px;
         }
 
-        /* Error text */
         .text-danger.small {
             font-size: 0.85rem;
         }
 
-        /* Animasi masuk */
         .card {
             animation: fadeInUp 0.7s ease;
         }
@@ -94,9 +92,9 @@
                     <form id="loginForm" action="<?= site_url('login') ?>" method="post">
                         <?= csrf_field() ?>
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username">
-                            <div id="usernameError" class="text-danger small"></div>
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                            <div id="emailError" class="text-danger small"></div>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
@@ -114,27 +112,26 @@
 </div>
 
 <script>
-
     const form = document.getElementById("loginForm");
-    const usernameInput = document.getElementById("username");
+    const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
-    const usernameError = document.getElementById("usernameError");
+    const emailError = document.getElementById("emailError");
     const passwordError = document.getElementById("passwordError");
 
     form.addEventListener("submit", function(e) {
         let valid = true;
 
-        if (usernameInput.value.trim() === "") {
-            usernameError.textContent = "You must input Username";
-            usernameInput.classList.add("is-invalid");
+        if (emailInput.value.trim() === "") {
+            emailError.textContent = "You must input Email";
+            emailInput.classList.add("is-invalid");
             valid = false;
         } else {
-            usernameError.textContent = "";
-            usernameInput.classList.remove("is-invalid");
+            emailError.textContent = "";
+            emailInput.classList.remove("is-invalid");
         }
 
         if (passwordInput.value.trim() === "") {
-            passwordError.textContent = "You must input password";
+            passwordError.textContent = "You must input Password";
             passwordInput.classList.add("is-invalid");
             valid = false;
         } else {
