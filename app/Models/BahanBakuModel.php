@@ -77,7 +77,7 @@ class BahanBakuModel extends Model
         $now = new DateTime();
         $expired_date = new DateTime($bahan['tanggal_kadaluarsa']);
         $interval = $now->diff($expired_date);
-        $daysRemaining = (int)$interval->format('%a'); // kalau sudah kadaluarsa nilai nya negatif
+        $daysRemaining = (int)$interval->format('%R%a'); // kalau sudah kadaluarsa nilai nya negatif
 
         if ($bahan['jumlah'] <= 0) {
             return 'Habis';

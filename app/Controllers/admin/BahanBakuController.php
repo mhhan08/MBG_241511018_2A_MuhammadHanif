@@ -104,18 +104,19 @@ class BahanBakuController extends BaseController
         return redirect()->to('admin/bahan-baku')->with('success', 'Stok bahan baku berhasil diupdate.');
     }
 
-    public function delete($id = null)
+    public function delete($id)
     {
         $bahan = $this->bahanModel->find($id);
-
         if (!$bahan) {
-            return redirect()->to('/admin/bahan_baku')
-                ->with('error', 'bahan tidak ditemukan.');
+            return redirect()->to('admin/bahan-baku')->with('error', 'Bahan tidak ditemukan.');
+        }
+
+        // ATURAN: Hanya bahan yang sudah kadaluarsa yang boleh dihapus
+        if ($bahan['status'] !== 'Kadaluarsa') {
+            return redirect()->to('admin/bahan-baku')->with('error', 'Gagal Menghapus, hanya dapat menghapus bahan baku berstatus Kadaluarsa');
         }
 
         $this->bahanModel->delete($id);
-
-        return redirect()->to('/admin/bahan_baku')
-            ->with('success', 'bahan berhasil dihapus.');
+        return redirect()->to('admin/bahan-baku')->with('success', 'Bahan baku berhasil dihapus.');
     }
 }
