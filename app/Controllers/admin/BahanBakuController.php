@@ -65,38 +65,43 @@ class BahanBakuController extends BaseController
         return redirect()->to('/admin/bahan-baku')->with('success', 'Bahan baku berhasil ditambahkan.');
     }
 
-    public function edit($id = null)
+    public function edit($id)
     {
         $bahan = $this->bahanModel->find($id);
-
         if (!$bahan) {
-            throw new PageNotFoundException('bahan baku dengan ID ' . $id . ' tidak ditemukan.');
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Bahan baku tidak ditemukan.');
         }
 
-        return view('admin/stock_form', [
-            'bahan_baku'     => $bahan,
+        $data = [
+            'title'      => 'Edit Bahan Baku',
+            'bahan'      => $bahan,
             'validation' => \Config\Services::validation()
-        ]);
+        ];
+        return view('admin/bahan_baku/form', $data);
     }
 
-    public function update($id = null)
+    /**
+     * Memproses pembaruan data bahan baku dari form edit.
+     */
+    public function update($id)
     {
+        // Aturan validasi hanya untuk field 'jumlah'
         $rules = [
-            'jumlah'     => 'required|numeric|greater_than[0]'
+            'jumlah' => 'required|numeric|greater_than_equal_to[0]'
         ];
 
         if (!$this->validate($rules)) {
-            return redirect()->back()
-                ->withInput()
-                ->with('validation', $this->validator);
+            return redirect()->back()->withInput();
         }
 
-        $this->courseModel->update($id, [
-            'jumlah'     => $this->request->getPost('jumlah')
-        ]);
+        // Menyiapkan data yang akan diupdate, hanya field 'jumlah'
+        $dataToUpdate = [
+            'jumlah' => $this->request->getPost('jumlah')
+        ];
 
-        return redirect()->to('/admin/bahan_baku')
-            ->with('success', 'bahan baku berhasil diubah.');
+        $this->bahanModel->update($id, $dataToUpdate);
+
+        return redirect()->to('admin/bahan-baku')->with('success', 'Stok bahan baku berhasil diupdate.');
     }
 
     public function delete($id = null)
