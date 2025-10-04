@@ -31,7 +31,8 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
         //control permintaan
         $routes->get('permintaan', 'PermintaanController::index');
         $routes->get('permintaan/detail/(:num)', 'PermintaanController::detail/$1');
-
+        $routes->post('permintaan/approve/(:num)', 'PermintaanController::approve/$1');
+        $routes->post('permintaan/reject/(:num)', 'PermintaanController::reject/$1');
     });
 
     // routes dapur

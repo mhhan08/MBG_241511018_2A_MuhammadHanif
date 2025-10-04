@@ -119,13 +119,13 @@ class PermintaanController extends BaseController
 
     public function riwayat()
     {
-        // 1. Ambil semua permintaan yang dibuat oleh user yang sedang login
+        // ambil semua permintaan yang dibuat oleh user yg login
         $permintaanUtama = $this->permintaanModel
             ->where('pemohon_id', session()->get('userId'))
             ->orderBy('created_at', 'DESC') // Urutkan dari yang terbaru
             ->findAll();
 
-        // 2. Untuk setiap permintaan, ambil detail bahannya
+        // ambil detail bahan untuk setiap permintaan
         foreach ($permintaanUtama as $key => $permintaan) {
             $detailBahan = $this->permintaanDetailModel
                 ->select('permintaan_detail.jumlah_diminta, bahan_baku.nama, bahan_baku.satuan')
@@ -133,7 +133,7 @@ class PermintaanController extends BaseController
                 ->where('permintaan_id', $permintaan['id'])
                 ->findAll();
 
-            // 3. Sisipkan detail bahan ke dalam data permintaan utama
+            // masukkan detail bahan
             $permintaanUtama[$key]['detail_bahan'] = $detailBahan;
         }
 
@@ -142,6 +142,6 @@ class PermintaanController extends BaseController
             'permintaan_list' => $permintaanUtama,
         ];
 
-        return view('dapur/riwayat', $data); // Menggunakan view baru: dapur/riwayat.php
+        return view('dapur/riwayat', $data);
     }
 }

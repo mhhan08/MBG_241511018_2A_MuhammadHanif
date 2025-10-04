@@ -1,9 +1,8 @@
 <?= $this->extend('layout/template') ?>
 
 <?php
-// Menentukan apakah form ini dalam mode 'edit' atau 'tambah baru'
+// untuk cek apakah ini foorm untuk edit atau tambah baru
 $isEdit = isset($bahan);
-// Menentukan URL tujuan form dan judul berdasarkan mode
 $formAction = $isEdit ? site_url('admin/bahan-baku/update/' . $bahan['id']) : site_url('admin/bahan-baku');
 $pageTitle = $isEdit ? 'Update Stok Bahan Baku' : 'Tambah Bahan Baku Baru';
 ?>

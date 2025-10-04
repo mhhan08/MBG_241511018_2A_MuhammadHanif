@@ -15,6 +15,7 @@ class BahanBakuController extends BaseController
         $this->bahanModel = new BahanBakuModel();
     }
 
+    //untuk tampilkan semua data bahan baku
     public function index()
     {
         $data = [
@@ -80,12 +81,9 @@ class BahanBakuController extends BaseController
         return view('admin/bahan_baku/form', $data);
     }
 
-    /**
-     * Memproses pembaruan data bahan baku dari form edit.
-     */
     public function update($id)
     {
-        // Aturan validasi hanya untuk field 'jumlah'
+        // Aturan input stock
         $rules = [
             'jumlah' => 'required|numeric|greater_than_equal_to[0]'
         ];
@@ -94,7 +92,6 @@ class BahanBakuController extends BaseController
             return redirect()->back()->withInput();
         }
 
-        // Menyiapkan data yang akan diupdate, hanya field 'jumlah'
         $dataToUpdate = [
             'jumlah' => $this->request->getPost('jumlah')
         ];
@@ -111,7 +108,7 @@ class BahanBakuController extends BaseController
             return redirect()->to('admin/bahan-baku')->with('error', 'Bahan tidak ditemukan.');
         }
 
-        // ATURAN: Hanya bahan yang sudah kadaluarsa yang boleh dihapus
+        // hanya bahan yg sudah kadaluarsa yg boleh dihapus
         if ($bahan['status'] !== 'Kadaluarsa') {
             return redirect()->to('admin/bahan-baku')->with('error', 'Gagal Menghapus, hanya dapat menghapus bahan baku berstatus Kadaluarsa');
         }

@@ -75,7 +75,7 @@
 </div>
 
 <script>
-    // Menambahkan dialog konfirmasi sebelum menghapus
+    // dialog konfirmasi sblm dihapus
     document.addEventListener("DOMContentLoaded", function () {
         const deleteForms = document.querySelectorAll('.delete-form');
         deleteForms.forEach(form => {

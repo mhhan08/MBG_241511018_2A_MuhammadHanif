@@ -81,7 +81,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="card shadow">
                 <div class="card-body p-5">
-                    <h2 class="card-title text-center mb-4">Login Sistem Akademik</h2>
+                    <h2 class="card-title text-center mb-4">Login Pengelolaan Makan Bergizi Gratis</h2>
 
                     <?php if (session()->getFlashdata('error')): ?>
                         <div class="alert alert-danger" role="alert">
