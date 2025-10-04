@@ -10,37 +10,20 @@ class PermintaanModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['pemohon_id','tgl_masak','menu_makan','jumlah_porsi'];
 
-    protected bool $allowEmptyInserts = false;
-    protected bool $updateOnlyChanged = true;
+    // Kolom yang diizinkan untuk diisi dari controller
+    protected $allowedFields    = [
+        'pemohon_id',
+        'tgl_masak',
+        'menu_makan',
+        'jumlah_porsi',
+        'status'
+    ];
 
-    protected array $casts = [];
-    protected array $castHandlers = [];
-
-    // Dates
-    protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
+    // Mengaktifkan timestamps untuk mengisi 'created_at' secara otomatis
+    protected $useTimestamps = true;
     protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
-
-    // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
-    protected $cleanValidationRules = true;
-
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+    // Dinonaktifkan karena tidak ada kolom 'updated_at' di tabel Anda
+    protected $updatedField  = '';
 }

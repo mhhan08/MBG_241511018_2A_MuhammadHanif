@@ -35,7 +35,8 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     });
 
     // routes dapur
-    $routes->group('dapur', ['filter' => 'role:dapur'], function($routes) {
-
+    $routes->group('dapur', ['namespace' => 'App\Controllers\dapur'], function ($routes) {
+        $routes->get('permintaan/new', 'PermintaanController::new');
+        $routes->post('permintaan', 'PermintaanController::create');
     });
 });

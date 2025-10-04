@@ -18,7 +18,7 @@ $role = session()->get('role');
 ?>
 
 
-//dashboard untuk gudang
+<!--dashboard untuk gudang -->
 <?php if ($role == 'gudang'): ?>
 
     <!-- Kartu Statistik -->
@@ -71,10 +71,10 @@ $role = session()->get('role');
         </div>
     </div>
 
-//dashboard untuk dapur
+<!-- untuk dapur  -->
 <?php elseif ($role == 'dapur'): ?>
 
-    <!-- Kartu Statistik -->
+    <!--Statistik -->
     <div class="row align-items-md-stretch">
         <div class="col-md-6 mb-4">
             <div class="h-100 p-5 text-white bg-success rounded-3 shadow">
