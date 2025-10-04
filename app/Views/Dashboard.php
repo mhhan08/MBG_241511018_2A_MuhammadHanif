@@ -119,7 +119,7 @@ $role = session()->get('role');
                     <i class="fas fa-tasks fa-4x text-success mb-3"></i>
                     <h5 class="card-title">Lihat Status Permintaan</h5>
                     <p class="card-text">Pantau status permintaan Anda (Menunggu, Disetujui, Ditolak).</p>
-                    <a href="<?= site_url('dapur/permintaan') ?>" class="btn btn-success">Lihat Riwayat</a>
+                    <a href="<?= site_url('dapur/permintaan/riwayat') ?>" class="btn btn-success">Lihat Riwayat</a>
                 </div>
             </div>
         </div>

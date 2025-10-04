@@ -116,4 +116,32 @@ class PermintaanController extends BaseController
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
+    public function riwayat()
+    {
+        // 1. Ambil semua permintaan yang dibuat oleh user yang sedang login
+        $permintaanUtama = $this->permintaanModel
+            ->where('pemohon_id', session()->get('userId'))
+            ->orderBy('created_at', 'DESC') // Urutkan dari yang terbaru
+            ->findAll();
+
+        // 2. Untuk setiap permintaan, ambil detail bahannya
+        foreach ($permintaanUtama as $key => $permintaan) {
+            $detailBahan = $this->permintaanDetailModel
+                ->select('permintaan_detail.jumlah_diminta, bahan_baku.nama, bahan_baku.satuan')
+                ->join('bahan_baku', 'bahan_baku.id = permintaan_detail.bahan_id')
+                ->where('permintaan_id', $permintaan['id'])
+                ->findAll();
+
+            // 3. Sisipkan detail bahan ke dalam data permintaan utama
+            $permintaanUtama[$key]['detail_bahan'] = $detailBahan;
+        }
+
+        $data = [
+            'title'      => 'Riwayat Permintaan Saya',
+            'permintaan_list' => $permintaanUtama,
+        ];
+
+        return view('dapur/riwayat', $data); // Menggunakan view baru: dapur/riwayat.php
+    }
 }
